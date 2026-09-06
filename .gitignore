@@ -1,0 +1,23 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Research paper — not code
+docs/*.docx
+
+# Generated experiment output
+results/
+data/**/*.csv
+
+# OS / editor cruft
+.DS_Store
+.vscode/
+.idea/
+*.swp

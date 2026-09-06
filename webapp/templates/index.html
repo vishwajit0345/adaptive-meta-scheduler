@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adaptive Meta-Scheduler — Control Panel</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="panel-header">
+  <div class="panel-header__title">
+    <span class="dot" id="live-dot"></span>
+    <h1>Adaptive Meta-Scheduler</h1>
+  </div>
+  <p class="panel-header__sub">
+    Live control panel — every run below calls the real simulator, the real
+    scheduler classes, and (for SJF_Predicted / RL_Adaptive) the real trained
+    LSTM + bandit in <code>results/*.json</code>. Nothing here is a
+    reimplementation.
+    {% if not model_trained %}
+    <span class="warn">— no trained model found; run
+      <code>python scripts/export_results.py</code> first, or LSTM/RL
+      results below will be meaningless.</span>
+    {% endif %}
+  </p>
+</header>
+
+<main>
+
+  <section class="step" id="step-workload">
+    <div class="step__label"><span class="step__num">01</span> WORKLOAD</div>
+
+    <div class="source-toggle" role="tablist">
+      <button class="source-toggle__btn is-active" data-source="synthetic" role="tab">Synthetic</button>
+      <button class="source-toggle__btn" data-source="real" role="tab">Real trace</button>
+    </div>
+
+    <div class="controls" id="controls-synthetic">
+      <label class="field">
+        <span>Profile</span>
+        <select id="workload-type">
+          <option value="interactive">Interactive</option>
+          <option value="mixed" selected>Mixed</option>
+          <option value="cpu_bound">CPU-bound</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="controls is-hidden" id="controls-real">
+      <label class="field field--wide">
+        <span>Window <span id="window-index-label">1</span> / 30 — Alibaba PAI GPU trace</span>
+        <input type="range" id="window-index" value="0" min="0" max="29" step="1">
+      </label>
+    </div>
+
+    <button class="btn btn--primary" id="btn-generate">Generate workload</button>
+    <p class="workload-label" id="workload-label">No workload generated yet.</p>
+  </section>
+
+  <section class="step" id="step-algorithm">
+    <div class="step__label"><span class="step__num">02</span> ALGORITHM</div>
+    <div class="algo-grid" id="algo-grid"><!-- populated by app.js --></div>
+    <button class="btn btn--ghost" id="btn-compare" disabled>Compare all 9</button>
+  </section>
+
+  <section class="step" id="step-result">
+    <div class="step__label"><span class="step__num">03</span> RESULT</div>
+
+    <div id="result-empty" class="result-empty">
+      Generate a workload, then pick an algorithm (or compare all of them).
+    </div>
+
+    <div id="result-single" class="is-hidden">
+      <div class="metrics-row" id="metrics-row"><!-- populated by app.js --></div>
+      <div id="chosen-note" class="chosen-note is-hidden"></div>
+      <div class="gantt" id="gantt"><!-- populated by app.js --></div>
+      <div class="gantt-axis" id="gantt-axis"></div>
+      <p class="truncated-note is-hidden" id="truncated-note">
+        Hit the simulator's tick cap before every process finished — shown as-is.
+      </p>
+    </div>
+
+    <div id="result-compare" class="is-hidden">
+      <div class="compare-chart" id="compare-chart"><!-- populated by app.js --></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>Adaptive Meta-Scheduler</span>
+  <span class="footer-sep">·</span>
+  <span>Flask frontend, real backend</span>
+</footer>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

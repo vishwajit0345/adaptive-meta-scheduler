@@ -1,0 +1,18 @@
+# Core
+numpy>=1.24
+
+# Charts (visualization/plots.py, visualization/extended_plots.py)
+matplotlib>=3.7
+
+# Statistical significance testing (evaluation/statistics.py).
+# Optional: the module falls back to a pure-Python Welch t-test / Wilcoxon
+# approximation if scipy is not installed, so this is a "nice to have",
+# not a hard requirement.
+scipy>=1.10
+
+# Testing
+pytest>=7.4
+
+# Flask frontend (webapp/app.py) — calls the real simulator/schedulers/LSTM/
+# bandit directly, server-side; optional if you only want the CLI/dashboard.
+flask>=3.0
